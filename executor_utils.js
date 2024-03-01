@@ -3,7 +3,7 @@ const {AST, ColumnRef, Param, Value} = require('node-sql-parser');
 /**
  * Resolves actual table from SQL query
  * @param map {Map<string, []>}
- * @param sql {AST}
+ * @param sql {AST | {table: string}}
  * @returns {[]}
  */
 function get_table_from_sql(map, sql) {
@@ -16,9 +16,12 @@ function get_table_from_sql(map, sql) {
 
 /**
  * Returns table from SQL query
- * @param sql {AST}
+ * @param sql {AST | {table: string}}
  */
 function find_table(sql) {
+    if (typeof sql.table == 'string')
+        return sql.table;
+
     switch (sql.type) {
         case "drop":
             return sql.name[0];

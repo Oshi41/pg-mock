@@ -79,6 +79,9 @@ class PgMock {
      * @private
      */
     get _tests_only_table_map() {
+        if (!process.env.TESTS)
+            throw new Error('Should be called only from tests');
+
         const session = this.#transaction || this.#main_session;
         return session.tables;
     }
